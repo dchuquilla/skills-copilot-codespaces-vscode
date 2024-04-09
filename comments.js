@@ -1,84 +1,41 @@
 // create new web server
-const express = require('express');
-const app = express();
+var express = require('express');
+var app = express();
+var path = require('path');
+var fs = require('fs');
+var bodyParser = require('body-parser');
+var comments = require('./comments');
+var PORT = 3000;
 
-// create a server
-app.listen(3000, () => {
-  console.log('Server is running on http://localhost:3000');
+// use body-parser middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+
+// use static middleware
+app.use(express.static(path.join(__dirname, 'public')));
+
+// get comment list
+app.get('/comments', function(req, res) {
+    comments.getComments(function(err, data) {
+        if (err) {
+            return res.status(500).send('Server Error');
+        }
+        res.json(data);
+    });
 });
 
-// create a route
-app.get('/', (req, res) => {
-  res.send('Welcome to my blog');
+// add comment
+app.post('/comments', function(req, res) {
+    var comment = req.body;
+    comments.addComment(comment, function(err) {
+        if (err) {
+            return res.status(500).send('Server Error');
+        }
+        res.status(201).send('OK');
+    });
 });
 
-// create a route
-app.get('/comments', (req, res) => {
-  res.send('Comments will be here');
-});
-
-// create a route
-app.get('/about', (req, res) => {
-  res.send('About me');
-});
-// Path: comments.js
-// create new web server
-const express = require('express');
-
-// create a server
-app.listen(3000, () => {
-  console.log('Server is running on http://localhost:3000');
-});
-
-// create a route
-app.get('/', (req, res) => {
-  res.send('Welcome to my blog');
-});
-
-// create a route
-app.get('/comments', (req, res) => {
-  res.send('Comments will be here');
-});
-
-// create a route
-app.get('/about', (req, res) => {
-  res.send('About me');
-});
-
-// create a route
-app.get('/blog', (req, res) => {
-  res.send('Blog page');
-});
-// Path: comments.js
-// create new web server
-const express = require('express');
-
-// create a server
-app.listen(3000, () => {
-  console.log('Server is running on http://localhost:3000');
-});
-
-// create a route
-app.get('/', (req, res) => {
-  res.send('Welcome to my blog');
-});
-
-// create a route
-app.get('/comments', (req, res) => {
-  res.send('Comments will be here');
-});
-
-// create a route
-app.get('/about', (req, res) => {
-  res.send('About me');
-});
-
-// create a route
-app.get('/blog', (req, res) => {
-  res.send('Blog page');
-});
-
-// create a route
-app.get('/contact', (req, res) => {
-  res.send('Contact me');
+// start server
+app.listen(PORT, function() {
+    console.log('Server is running on http://localhost:' + PORT);
 });
