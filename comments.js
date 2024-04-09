@@ -24,7 +24,6 @@ app.get('/about', (req, res) => {
 // Path: comments.js
 // create new web server
 const express = require('express');
-const app = express();
 
 // create a server
 app.listen(3000, () => {
@@ -53,7 +52,6 @@ app.get('/blog', (req, res) => {
 // Path: comments.js
 // create new web server
 const express = require('express');
-const app = express();
 
 // create a server
 app.listen(3000, () => {
@@ -84,11 +82,3 @@ app.get('/blog', (req, res) => {
 app.get('/contact', (req, res) => {
   res.send('Contact me');
 });
-// Path: comments.js
-// create new web server
-const express = require('express');
-const app = express();
-
-// create a server
-app.listen(3000, () => {
-  console.log('Server
